@@ -17,4 +17,8 @@ public class ParticipantsDataRepository {
     public List<Participant> getData() {
         return data;
     }
+
+    public Integer getNumberOfParticipants() {
+        return data.size();
+    }
 }

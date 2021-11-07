@@ -14,10 +14,6 @@ public class SuggestionsDataRepository {
         this.suggestionsData = suggestionsData;
     }
 
-    public Map<Integer, List<Integer>> getSuggestionsData() {
-        return suggestionsData;
-    }
-
     public StringBuilder dataToString() {
         StringBuilder dataStringRepresentation = new StringBuilder();
         for (Integer ID: suggestionsData.keySet()) {
