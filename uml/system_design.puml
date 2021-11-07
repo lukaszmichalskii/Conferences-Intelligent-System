@@ -85,10 +85,12 @@ namespace algorithm {
         -{method}findParticipantsWithBestMatchValue(data: Map<Integer, Map<Integer, List<Integer>>>, allMatchValues: List<Integer>, suggestionsNumber: Integer): Map<Integer, List<Integer>>
         -{method}datacleaningresponsibility
     }
-
-    class DataTransformer {
-    -{method}transformDataToMoreReadableForm(results: Map<Integer, Map<Integer, Integer>>, allMatchValues: List<Integer>): Map<Integer, Map<Integer, List<Integer>>>
+    namespace tools {
+        class DataTransformer {
+            -{method}transformDataToMoreReadableForm(results: Map<Integer, Map<Integer, Integer>>, allMatchValues: List<Integer>): Map<Integer, Map<Integer, List<Integer>>>
+            }
     }
+
 }
 
 namespace databasePreparation {
@@ -107,7 +109,7 @@ namespace databasePreparation {
 system.ConferenceIntelligentSystem o-- system.SystemInitializer
 system.ConferenceIntelligentSystem o-- system.Printer
 algorithm.BruteForceAlgorithm o-- database.ParticipantsDataRepository
-algorithm.BruteForceAlgorithm o-- algorithm.DataTransformer
+algorithm.BruteForceAlgorithm o-- algorithm.tools.DataTransformer
 inputHandling.InputParser o-- inputHandling.FileParseStrategy
 
 
