@@ -1,5 +1,5 @@
 package main.java.system;
 
-public abstract class System {
+public abstract class SystemAbstraction {
     public abstract void runSystem();
 }

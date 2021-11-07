@@ -17,4 +17,13 @@ public class SuggestionsDataRepository {
     public Map<Integer, List<Integer>> getSuggestionsData() {
         return suggestionsData;
     }
+
+    public StringBuilder dataToString() {
+        StringBuilder dataStringRepresentation = new StringBuilder();
+        for (Integer ID: suggestionsData.keySet()) {
+            String info = "ID: " + ID + ", suggestions: " + suggestionsData.get(ID) + "\n";
+            dataStringRepresentation.append(info);
+        }
+        return dataStringRepresentation;
+    }
 }
