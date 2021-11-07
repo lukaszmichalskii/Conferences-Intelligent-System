@@ -22,6 +22,8 @@ public class ConferenceIntelligentSystem extends SystemAbstraction {
         SystemInitializer systemInitializer = new SystemInitializer(database);
         Algorithm calculationsEngine = systemInitializer.init();
 
+        System.out.println(database.dataToString());
+
         // results of calculations
         Map<Integer, List<Integer>> suggestions = calculationsEngine.provideSuggestions(suggestionsNumber);
 
@@ -30,6 +32,6 @@ public class ConferenceIntelligentSystem extends SystemAbstraction {
 
         // print results
         Printer resultsPrinter = new Printer();
-        resultsPrinter.print(suggestionsDataRepository.dataToString().toString());
+        resultsPrinter.print(suggestionsDataRepository.dataToString());
     }
 }
