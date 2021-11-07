@@ -40,6 +40,10 @@ namespace inputHandling {
         {method}parseFile(Path filepath): List<String>
     }
 
+    interface FileChecker {
+        {method}{static}isFileExist(Path filepath): boolean
+    }
+
     class TxtFileParser implements FileParseStrategy {
         {method}parseFile(Path filepath): List<String>
     }
@@ -48,12 +52,6 @@ namespace inputHandling {
         -{field}fileParser: FileParseStrategy
         +{method}<<constructor>> InputParser(fileParser: FileParseStrategy)
         +{method}parseFile(Path filepath): List<String>
-    }
-}
-
-namespace filepathChecker {
-    interface filepathChecker {
-        {method}{static}isFileExist(Path filepath): boolean
     }
 }
 

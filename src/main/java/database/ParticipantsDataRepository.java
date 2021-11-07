@@ -4,6 +4,9 @@ import main.java.participant.Participant;
 
 import java.util.List;
 
+/**
+ * Class stores optional data entered by participants to calculate suggestions
+ */
 public class ParticipantsDataRepository {
     private final List<Participant> data;
 

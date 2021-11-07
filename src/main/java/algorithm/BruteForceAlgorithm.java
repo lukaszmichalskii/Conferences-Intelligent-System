@@ -7,6 +7,10 @@ import main.java.participant.Participant;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Brute force algorithm calculate all match value parameter for all participants
+ * Return best matching suggestions ('suggestionsNumber' people) to every analyzed participant
+ */
 public class BruteForceAlgorithm implements Algorithm {
     private ParticipantsDataRepository participantsDataRepository;
     private DataTransformer dataTransformer;
