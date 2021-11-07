@@ -1,0 +1,117 @@
+@startuml
+
+namespace system {
+    abstract System {
+        +{method}runSystem(): void
+    }
+
+    class ConferenceIntelligentSystem extends System {
+        -{field}filepathToSurveyData: String
+        -{field}suggestionsNumber: Integer
+        -{field}systemInitializer: SystemInitializer
+        -{field}printer: Printer
+        +{method}<<constructor>> ConferenceIntelligentSystem(filepath: String, suggestionsNumber: Integer)
+        +{method}runSystem(): void
+    }
+
+    class SystemInitializer {
+        +{method}init(): void
+        +{method}algorithm(): Algorithm
+    }
+
+    class Printer {
+        +{method}print(statement: String): void
+    }
+}
+
+namespace participant {
+    class Participant {
+        -{field}ID: Integer
+        -{field}attributes: List<String>
+        +{method}<<constructor>> Participant(ID: Integer, attributes: List<String>)
+        +{method}toString(): String
+        +{method}getID(): Integer
+        +{method}getInterestArea(): List<String>
+    }
+}
+
+namespace inputHandling {
+    interface FileParseStrategy {
+        {method}parseFile(Path filepath): List<String>
+    }
+
+    class TxtFileParser implements FileParseStrategy {
+        {method}parseFile(Path filepath): List<String>
+    }
+
+    class InputParser {
+        -{field}fileParser: FileParseStrategy
+        +{method}<<constructor>> InputParser(fileParser: FileParseStrategy)
+        +{method}parseFile(Path filepath): List<String>
+    }
+}
+
+namespace filepathChecker {
+    interface filepathChecker {
+        {method}{static}isFileExist(Path filepath): boolean
+    }
+}
+
+namespace database {
+    class ParticipantsDataRepository {
+        -{field}suggestionsData: Map<Integer, List<Integer>>
+        +{method}<<constructor>> ParticipantsDataRepository(suggestionsData: Map<Integer, List<Integer>>)
+        +{method}getSuggestionsData(): Map<Integer, List<Integer>>
+    }
+    class SuggestionsDataRepository {
+        -{field}data: List<Participant>
+        +{method}<<constructor>> SuggestionsDataRepository(data: List<Participant>)
+        +{method}getData(): List<Participant>
+    }
+}
+
+namespace algorithm {
+    interface Algorithm {
+        {method}provideSuggestions(suggestionsNumber: Integer): Map<Integer, List<Integer>>
+    }
+
+    class BruteForceAlgorithm implements Algorithm {
+        -{field}participantsDataRepository: ParticipantsDataRepository
+        -{field}dataTransformer: DataTransformer
+        +{method}<<constructor>> BruteForceAlgorithm(participantsDataRepository: ParticipantsDataRepository, dataTransformer: DataTransformer)
+        +{method}provideSuggestions(suggestionsNumber: Integer): Map<Integer, List<Integer>>
+        -{method}findBestParametersForAll(data: List<Participant>)
+        -{method}findAllPossibleMatchValues(results: Map<Integer, Map<Integer, Integer>>): List<Integer>
+        -{method}findParticipantsWithBestMatchValue(data: Map<Integer, Map<Integer, List<Integer>>>, allMatchValues: List<Integer>, suggestionsNumber: Integer): Map<Integer, List<Integer>>
+        -{method}datacleaningresponsibility
+    }
+
+    class DataTransformer {
+    -{method}transformDataToMoreReadableForm(results: Map<Integer, Map<Integer, Integer>>, allMatchValues: List<Integer>): Map<Integer, Map<Integer, List<Integer>>>
+    }
+}
+
+namespace databasePreparation {
+    class DataOrganizer {
+    -{field}dataToOrganize: List<String>
+    +{method}<<constructor>> DataOrganizer(dataToOrganize: List<String>)
+    +{method}organizeData(): List<Participant>
+    +{static}{method}removeDuplicates(array: List<String>): List<String>
+    -{method}reformatData(): List<List<String>>
+    -{method}mergeArrays(array1: List<String>, array2: List<String>): List<String>
+    -{method}extractOccupation(raw_data: List<String>): List<String>
+    -{method}extractInterestArea(raw_data: List<String>): List<String>
+    }
+}
+
+system.ConferenceIntelligentSystem o-- system.SystemInitializer
+system.ConferenceIntelligentSystem o-- system.Printer
+algorithm.BruteForceAlgorithm o-- database.ParticipantsDataRepository
+algorithm.BruteForceAlgorithm o-- algorithm.DataTransformer
+inputHandling.InputParser o-- inputHandling.FileParseStrategy
+
+
+
+
+
+@enduml
