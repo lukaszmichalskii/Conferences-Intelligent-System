@@ -1,4 +1,4 @@
-package main.java.system;
+package main.java.system.output;
 
 public class Printer {
     public void print(String statement) {

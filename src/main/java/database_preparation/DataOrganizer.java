@@ -1,4 +1,4 @@
-package main.java.databasePreparation;
+package main.java.database_preparation;
 
 import main.java.participant.Participant;
 

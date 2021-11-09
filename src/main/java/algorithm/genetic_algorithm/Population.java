@@ -1,88 +1,65 @@
 package main.java.algorithm.genetic_algorithm;
 
-import main.java.database.ParticipantsDataRepository;
+import main.java.algorithm.genetic_algorithm.dna.DNA;
 import main.java.participant.Participant;
+import main.java.system.output.Colors;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Population {
-    private DNA[] population;
-    private Map<DNA, Integer> fitness = new HashMap<>();
-    private List<DNA> mating = new ArrayList<>();
-    private float mutationRate;
-    private List<Participant> participants;
+    private final DNA[] population;
+    private final List<DNA> matingPool = new ArrayList<>();
+    private DNA curr_best;
 
-    public Population(Integer popMax, Integer suggestionsNumber, ParticipantsDataRepository dataRepository, double mutationRate) {
+    public Population(Integer popMax, Integer suggestionsNumber, List<Participant> dataWithoutTarget, Participant target) {
         population = new DNA[popMax];
-        this.participants = dataRepository.getData();
+        curr_best = new DNA(suggestionsNumber, dataWithoutTarget, Boolean.TRUE);
+        curr_best.calculateFitness(target.getInterestArea());
         for (int i = 0; i < popMax; i++) {
-            population[i] = new DNA(suggestionsNumber, dataRepository.getData());
-        }
-    }
-
-    public DNA findMax() {
-        int max = -1;
-        for (DNA dna: fitness.keySet()) {
-            if (max < fitness.get(dna)) {
-                max = fitness.get(dna);
-            }
-        }
-
-        return getKey(fitness, max);
-    }
-
-    public <DNA, Integer> DNA getKey(Map<DNA, Integer> map, Integer value) {
-        for (Map.Entry<DNA, Integer> entry : map.entrySet()) {
-            if (entry.getValue().equals(value)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
-    public void calcFitness(List<String> target) {
-        for (int i = 0; i < this.population.length; i++) {
-//            System.out.println(target.toString());
-            population[i].calculateFitness(target);
-//            System.out.println("Score = "+population[i].getFitness()+", "+population[i]);
-            fitness.put(population[i], population[i].getFitness());
+            population[i] = new DNA(suggestionsNumber, new ArrayList<>(dataWithoutTarget), Boolean.FALSE);
         }
     }
 
     public void naturalSelection() {
-        for (int i = 0; i < this.population.length; i++) {
-            for (int j = 0; j < this.population[i].getFitness(); j++) {
-                this.mating.add(this.population[i]);
+        for (DNA dna : this.population) {
+            for (int j = 0; j < dna.getFitness(); j++) {
+                this.matingPool.add(dna);
             }
         }
     }
 
     public void generate() {
         for (int i = 0; i < this.population.length; i++) {
-            int A = new Random().nextInt(mating.size());
-//            System.out.println("A: " + A);
-            int B = new Random().nextInt(mating.size());
-//            System.out.println("B: " + B);
-
+            int A = new Random().nextInt(matingPool.size());
+            int B = new Random().nextInt(matingPool.size());
             while (A == B) {
-                B = new Random().nextInt(mating.size());
-//                System.out.println("B: " + B);
+                B = new Random().nextInt(matingPool.size());
             }
-            DNA parentA = this.mating.get(A);
-//            System.out.println("ParentA: " + parentA.toString());
-
-            DNA parentB = this.mating.get(B);
-//            System.out.println("ParentB: " + parentB.toString());
-            DNA child = parentA.crossover(parentB, new ArrayList<>(participants));
-//            System.out.println("child: " + child.toString());
-//            child.mutate(this.mutationRate);
+            DNA parentA = this.matingPool.get(A);
+            DNA parentB = this.matingPool.get(B);
+            DNA child = parentA.crossover(parentB);
             population[i] = child;
         }
     }
 
-    public void print() {
-        for (int i = 0; i < mating.size(); i++) {
-            System.out.println(i + " -> " + mating.get(i));
+    public void calcFitness(Participant target) {
+        for (DNA dna : population) {
+            dna.calculateFitness(target.getInterestArea());
+            System.out.println("Current best: " + curr_best.toString() + "Analyzed selection: " + dna);
+
+            if (curr_best.getFitness() < dna.getFitness()) {
+                System.out.println("____________________________________________________________________________________________");
+                System.out.println(Colors.ANSI_YELLOW + "Update best: " + curr_best + " to: " + dna + Colors.ANSI_RESET);
+                System.out.println("____________________________________________________________________________________________");
+
+                curr_best = dna;
+            }
         }
+    }
+
+    public DNA getCurr_best() {
+        return curr_best;
     }
 }

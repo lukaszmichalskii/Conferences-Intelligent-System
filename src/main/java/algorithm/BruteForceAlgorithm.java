@@ -1,7 +1,6 @@
 package main.java.algorithm;
 
 import main.java.algorithm.tools.DataTransformer;
-import main.java.database.ParticipantsDataRepository;
 import main.java.participant.Participant;
 
 import java.util.*;
@@ -11,17 +10,17 @@ import java.util.*;
  * Return best matching suggestions ('suggestionsNumber' people) to every analyzed participant
  */
 public class BruteForceAlgorithm implements Algorithm {
-    private ParticipantsDataRepository participantsDataRepository;
-    private DataTransformer dataTransformer;
+    private final List<Participant> participants;
+    private final DataTransformer dataTransformer;
 
-    public BruteForceAlgorithm(ParticipantsDataRepository participantsDataRepository, DataTransformer dataTransformer) {
-        this.participantsDataRepository = participantsDataRepository;
+    public BruteForceAlgorithm(List<Participant> participants, DataTransformer dataTransformer) {
+        this.participants = participants;
         this.dataTransformer = dataTransformer;
     }
 
     @Override
     public Map<Integer, List<Integer>> provideSuggestions(Integer suggestionsNumber) {
-        Map<Integer, Map<Integer, Integer>> results = findMatchParameterForAll(participantsDataRepository.getData());
+        Map<Integer, Map<Integer, Integer>> results = findMatchParameterForAll(participants);
         List<Integer> allMatchValues = findAllPossibleMatchValue(results);
         Map<Integer, Map<Integer, List<Integer>>> org = dataTransformer.transformDataToMoreReadableForm(results, allMatchValues);
 
@@ -85,5 +84,10 @@ public class BruteForceAlgorithm implements Algorithm {
             filteredResults.put(ID, selectedParticipants);
         }
         return filteredResults;
+    }
+
+    @Override
+    public String toString() {
+        return "BFT (brute force technique)";
     }
 }

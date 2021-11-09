@@ -1,42 +1,19 @@
 package main.java;
 
-import main.java.algorithm.genetic_algorithm.Population;
-import main.java.database.ParticipantsDataRepository;
-import main.java.databasePreparation.DataOrganizer;
-import main.java.inputHandling.FileParseStrategy;
-import main.java.inputHandling.InputParser;
-import main.java.inputHandling.TxtFileParser;
 import main.java.system.ConferenceIntelligentSystem;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import main.java.system.Settings;
 
 public class Main {
     public static void main(String[] args) {
-//        ConferenceIntelligentSystem system = new ConferenceIntelligentSystem(args[0], Integer.parseInt(args[1]));
-//        system.runSystem();
-        // get filepath
-        Path filepath = Paths.get(args[0]);
+        String filepath = args[0];
+        int profitabilityIndex = 5;
+        int maxPopulation = 20;
+        int maxIterWithoutChangeFit = 10;
+        int suggestionsNumber = Integer.parseInt(args[1]);
+        ConferenceIntelligentSystem system = new ConferenceIntelligentSystem(filepath,
+                                             new Settings(suggestionsNumber, profitabilityIndex, maxPopulation, maxIterWithoutChangeFit));
 
-        // parse data from filepath
-        FileParseStrategy fileParser = new TxtFileParser();
-        InputParser inputParser = new InputParser(fileParser);
-        List<String> fileContent = inputParser.parseFile(filepath);
-
-        // organize data
-        DataOrganizer dataOrganizer = new DataOrganizer(fileContent);
-        ParticipantsDataRepository participantsDataRepository = new ParticipantsDataRepository(dataOrganizer.organizeData());
-        Population population = new Population(20, Integer.parseInt(args[1]), participantsDataRepository, 0.01);
-        int maxIterations = 100;
-        int iternations = 0;
-        while (iternations < maxIterations) {
-            population.calcFitness(participantsDataRepository.getData().get(3).getInterestArea());
-            population.naturalSelection();
-            population.generate();
-            iternations += 1;
-        }
-        System.out.println("ID: " + participantsDataRepository.getData().get(3).getID() + "\nFit: " + population.findMax().toString());
+        system.runSystem();
     }
 
 

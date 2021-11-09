@@ -1,7 +1,7 @@
 package main.java.system;
 
 import main.java.database.ParticipantsDataRepository;
-import main.java.databasePreparation.DataOrganizer;
+import main.java.database_preparation.DataOrganizer;
 import main.java.inputHandling.FileParseStrategy;
 import main.java.inputHandling.InputParser;
 import main.java.inputHandling.TxtFileParser;
@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class ConferenceConfigurator {
-    public String filepathToSurveyData;
+    private final String filepathToSurveyData;
 
     public ConferenceConfigurator(String filepathToSurveyData) {
         this.filepathToSurveyData = filepathToSurveyData;

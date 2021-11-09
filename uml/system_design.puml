@@ -2,26 +2,56 @@
 
 namespace system {
     abstract System {
-        +{method}runSystem(): void
+        +abstract{method} runSystem(): void
     }
 
     class ConferenceIntelligentSystem extends System {
         -{field}filepathToSurveyData: String
-        -{field}suggestionsNumber: Integer
-        -{field}systemInitializer: SystemInitializer
         -{field}printer: Printer
+        -{field}settings: Settings
         +{method}<<constructor>> ConferenceIntelligentSystem(filepath: String, suggestionsNumber: Integer)
         +{method}runSystem(): void
     }
 
     class SystemInitializer {
-        +{method}init(): void
-        +{method}algorithm(): Algorithm
+        -{field}dataRepository: ParticipantsDataRepository
+        -{field}profitabilityIndex: int
+        -{field}maxIterWithoutChangeFit: int
+        -{field}maxPopulation: int
+        +{method}<<constructor>> SystemInitializer(dataRepository: ParticipantsDataRepository, profitabilityIndex: int, maxIterWithoutChangeFit: int, maxPopulation: int)
+        +{method}init(): Algorithm
     }
 
-    class Printer {
-        +{method}print(statement: String): void
+    class ConferenceConfigurator {
+        -{field}filepathToSurveyData: String
+        +{method}configure(): ParticipantsDataRepository
     }
+
+    class Settings {
+            -{field}SUGGESTIONS_NUMBER: int
+            -{field}MAX_POPULATION: int
+            -{field}MAX_ITERATIONS_WITHOUT_CHANG_FIT: int
+            -{field}PROFITABILITY_INDEX: int
+            +{method}getSUGGESTIONS_NUMBER(): int
+            +{method}getMAX_POPULATION(): int
+            +{method}getMAX_ITERATIONS_WITHOUT_CHANG_FIT(): int
+            +{method}getPROFITABILITY_INDEX(): int
+
+    }
+
+    namespace output {
+    class Printer {
+            +{method}print(statement: String): void
+        }
+        class Colors {
+        +{field}{static}ANSI_RESET: String
+        +{field}{static}ANSI_GREEN: String
+        +{field}{static}ANSI_YELLOW: String
+
+        }
+    }
+
+
 }
 
 namespace participant {
@@ -56,15 +86,22 @@ namespace inputHandling {
 }
 
 namespace database {
-    class ParticipantsDataRepository {
+    interface Database {
+    {method}dataToString: String
+    }
+    class ParticipantsDataRepository implements Database{
         -{field}suggestionsData: Map<Integer, List<Integer>>
         +{method}<<constructor>> ParticipantsDataRepository(suggestionsData: Map<Integer, List<Integer>>)
         +{method}getSuggestionsData(): Map<Integer, List<Integer>>
+            +{method}dataToString: String
+
     }
-    class SuggestionsDataRepository {
+    class SuggestionsDataRepository implements Database{
         -{field}data: List<Participant>
         +{method}<<constructor>> SuggestionsDataRepository(data: List<Participant>)
         +{method}getData(): List<Participant>
+            +{method}dataToString: String
+
     }
 }
 
@@ -74,18 +111,69 @@ namespace algorithm {
     }
 
     class BruteForceAlgorithm implements Algorithm {
-        -{field}participantsDataRepository: ParticipantsDataRepository
+        -{field}participants: List<Participant>
         -{field}dataTransformer: DataTransformer
-        +{method}<<constructor>> BruteForceAlgorithm(participantsDataRepository: ParticipantsDataRepository, dataTransformer: DataTransformer)
+        +{method}<<constructor>> BruteForceAlgorithm(participants: List<Participant>, dataTransformer: DataTransformer)
         +{method}provideSuggestions(suggestionsNumber: Integer): Map<Integer, List<Integer>>
         -{method}findBestParametersForAll(data: List<Participant>)
         -{method}findAllPossibleMatchValues(results: Map<Integer, Map<Integer, Integer>>): List<Integer>
         -{method}findParticipantsWithBestMatchValue(data: Map<Integer, Map<Integer, List<Integer>>>, allMatchValues: List<Integer>, suggestionsNumber: Integer): Map<Integer, List<Integer>>
-        -{method}datacleaningresponsibility
     }
+
+    namespace genetic_algorithm {
+        class GeneticAlgorithm implements algorithm.Algorithm {
+            -{field}participantsDataRepository: ParticipantsDataRepository
+            -{field}maxNumberOfIterationsWithoutChangingFit: int
+            -{field}maxPopulationSize: int
+            +{method}<<constructor>> GeneticAlgorithm(participantsDataRepository: ParticipantsDataRepository, maxIt: int, maxPopulationSize:  int)
+            +{method}provideSuggestions(suggestionsNumber: Integer): Map<Integer, List<Integer>>
+        }
+
+        class Population {
+        -{field}population: DNA[]
+        -{field}matingPool : List<DNA>
+        -{field}curr_best: DNA
+        +{method}<<constructor>> Population(popMax:int, suggestionsNumber:int, dataWithoutTarget: int, target: Participant)
+        +{method}naturalSelection():void
+        +{method}generate():void
+        +{method}calcFitness(target: Participant):void
+        +{method}getCurr_best(): DNA
+        }
+
+        namespace dna {
+        class DNA {
+                    -{field}genes: Participant[]
+                    -{field}fitness: int
+                    -{field}matchIndicatorCounter: MatchIndicatorCounterStrategy
+                    -{field}geneticInheritanceProcess: GeneticInheritanceProcessStrategy
+                    +{method}crossover(parentB: DNA): DNA
+                    +{method}calculateFitness(attributesTarget: List<String>): void
+                    +{method}getFitness(): int
+                    +{method}getGenes(): Participant[]
+                    +{method}setGenes(position: int, gene: Participant): void
+                    +{method}equals(o: Object): boolean
+                    +{method}hashCode(): int
+                }
+           interface MatchIndicatorCounterStrategy {
+           calculateFitness(genes: Participant[], attributesTarget: List<String>):int
+           }
+           class MatchIndicatorCounter implements MatchIndicatorCounterStrategy {
+           +{method}calculateFitness(genes: Participant[], attributesTarget: List<String>): int
+           }
+           interface GeneticInheritanceProcessStrategy  {
+                {method}crossover(parentA: DNA, parentB: DNA): DNA
+                      }
+          class GeneticInheritanceProcess  implements GeneticInheritanceProcessStrategy  {
+          +{method}crossover(parentA: DNA, parentB: DNA): DNA
+          }
+        }
+
+
+    }
+
     namespace tools {
         class DataTransformer {
-            -{method}transformDataToMoreReadableForm(results: Map<Integer, Map<Integer, Integer>>, allMatchValues: List<Integer>): Map<Integer, Map<Integer, List<Integer>>>
+            +{method}transformDataToMoreReadableForm(results: Map<Integer, Map<Integer, Integer>>, allMatchValues: List<Integer>): Map<Integer, Map<Integer, List<Integer>>>
             }
     }
 
@@ -104,9 +192,15 @@ namespace databasePreparation {
     }
 }
 
-system.ConferenceIntelligentSystem o-- system.SystemInitializer
-system.ConferenceIntelligentSystem o-- system.Printer
-algorithm.BruteForceAlgorithm o-- database.ParticipantsDataRepository
+system.ConferenceIntelligentSystem o-- system.output.Printer
+system.ConferenceIntelligentSystem o-- system.Settings
+system.SystemInitializer o-- database.ParticipantsDataRepository
+algorithm.genetic_algorithm.GeneticAlgorithm o-- database.ParticipantsDataRepository
+algorithm.genetic_algorithm.Population o-- algorithm.genetic_algorithm.dna.DNA
+algorithm.genetic_algorithm.dna.DNA o-- algorithm.genetic_algorithm.dna.MatchIndicatorCounter
+algorithm.genetic_algorithm.dna.DNA o-- algorithm.genetic_algorithm.dna.GeneticInheritanceProcess
+
+
 algorithm.BruteForceAlgorithm o-- algorithm.tools.DataTransformer
 inputHandling.InputParser o-- inputHandling.FileParseStrategy
 
