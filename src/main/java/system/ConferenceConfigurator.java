@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Class responsible for create / configure system
+ */
 public class ConferenceConfigurator {
     private final String filepathToSurveyData;
 
@@ -17,6 +20,10 @@ public class ConferenceConfigurator {
         this.filepathToSurveyData = filepathToSurveyData;
     }
 
+    /**
+     * Method creating objects
+     * @return the database of conference participants
+     */
     public ParticipantsDataRepository configure() {
         // get filepath
         Path filepath = Paths.get(filepathToSurveyData);

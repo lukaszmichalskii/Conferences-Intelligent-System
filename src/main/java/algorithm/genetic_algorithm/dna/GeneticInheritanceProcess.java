@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class defines the crossover idea of inheritance
+ */
 public class GeneticInheritanceProcess implements GeneticInheritanceProcessStrategy {
     private List<Participant> participants;
 

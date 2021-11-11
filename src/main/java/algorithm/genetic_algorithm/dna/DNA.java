@@ -4,6 +4,9 @@ import main.java.participant.Participant;
 
 import java.util.*;
 
+/**
+ * Class simulate the DNA in the genetic algorithm where the core is participants
+ */
 public class DNA {
     private Participant[] genes;
     private MatchIndicatorCounter matchIndicatorCounter;

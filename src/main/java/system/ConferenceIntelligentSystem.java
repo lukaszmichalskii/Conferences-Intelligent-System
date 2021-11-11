@@ -8,6 +8,9 @@ import main.java.system.output.Printer;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Core class of application, responsible for run calculations
+ */
 public class ConferenceIntelligentSystem extends SystemAbstraction {
     private final String filepathToSurveyData;
     private final Printer printer;

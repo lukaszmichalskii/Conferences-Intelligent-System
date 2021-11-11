@@ -4,6 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Class responsible for parse file
+ */
 public class InputParser {
 
     private final FileParseStrategy fileParser;

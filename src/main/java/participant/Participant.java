@@ -2,8 +2,17 @@ package main.java.participant;
 
 import java.util.List;
 
+/**
+ * Class represent the object of participant every with ID and interest area
+ */
 public class Participant {
+    /**
+     * Identifier of each participant
+     */
     private final Integer ID;
+    /**
+     * Compressed attributes: occupation + area of interest
+     */
     private final List<String> attributes;
 
     public Participant(Integer ID, List<String> attributes) {

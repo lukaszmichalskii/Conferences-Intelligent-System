@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class used by the brute force algorithm to transform data on which the algorithm can perform some computation
+ */
 public class DataTransformer {
     public Map<Integer, Map<Integer, List<Integer>>> transformDataToMoreReadableForm(Map<Integer, Map<Integer, Integer>> results, List<Integer> allMatchValues) {
         Map<Integer, Map<Integer, List<Integer>>> organizedResults = new HashMap<>();

@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class responsible for running objects and providing results in predefined form readable for users
+ */
 public class GeneticAlgorithm implements Algorithm {
     private final ParticipantsDataRepository participantsDataRepository;
     private final int maxNumberOfIterationsWithoutChangingFit;

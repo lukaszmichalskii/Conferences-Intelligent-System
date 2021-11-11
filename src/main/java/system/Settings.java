@@ -1,5 +1,8 @@
 package main.java.system;
 
+/**
+ * Class stores main settings of application
+ */
 public class Settings {
     private final int SUGGESTIONS_NUMBER;
     private final int MAX_POPULATION;

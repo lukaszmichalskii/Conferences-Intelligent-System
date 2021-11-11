@@ -4,6 +4,9 @@ import main.java.participant.Participant;
 
 import java.util.List;
 
+/**
+ * Implementation of fitness function
+ */
 public class MatchIndicatorCounter implements MatchIndicatorCounterStrategy {
     public int calculateFitness(Participant[] genes, List<String> attributesTarget) {
         int score = 0;

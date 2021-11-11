@@ -6,6 +6,9 @@ import main.java.algorithm.genetic_algorithm.GeneticAlgorithm;
 import main.java.algorithm.tools.DataTransformer;
 import main.java.database.ParticipantsDataRepository;
 
+/**
+ * Class responsible for initialize the algorithm used by perform calculations and finding best fit
+ */
 public class SystemInitializer {
     private final ParticipantsDataRepository dataRepository;
     private final int profitabilityIndex;
@@ -19,9 +22,12 @@ public class SystemInitializer {
         this.maxPopulation = maxPopulation;
     }
 
+    /**
+     * Method initialize algorithm technique based on size of data and determine how results will be calculated.
+     * Using brute force or genetic algorithm
+     * @return core calculation engine used for find best fit
+     */
     public Algorithm init() {
-
-        // define algorithm strategy
         DataTransformer dataTransformer = new DataTransformer();
         if (dataRepository.getNumberOfParticipants() <= profitabilityIndex) {
             return new BruteForceAlgorithm(dataRepository.getData(), dataTransformer);
@@ -29,7 +35,6 @@ public class SystemInitializer {
         else if (dataRepository.getNumberOfParticipants() > profitabilityIndex) {
             return new GeneticAlgorithm(dataRepository, maxIterWithoutChangeFit, maxPopulation);
         }
-
 
         return null;
     }

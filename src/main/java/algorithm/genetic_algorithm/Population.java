@@ -8,9 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class represents population (combinations of participants)
+ */
 public class Population {
+    /**
+     * Combinations of possibly best fit objects
+     */
     private final DNA[] population;
+    /**
+     * Data structure that stores data about combinations of fit.
+     * To simulate the real world probability if suggestion has fitness value = 4, there will be 4 such objects inside.
+     * If we want to pick one element from matingPool we could get element with appropriate probability.
+     */
     private final List<DNA> matingPool = new ArrayList<>();
+    /**
+     * current best fit object
+     */
     private DNA curr_best;
 
     public Population(Integer popMax, Integer suggestionsNumber, List<Participant> dataWithoutTarget, Participant target) {
@@ -30,6 +44,9 @@ public class Population {
         }
     }
 
+    /**
+     * Method generate new generation based on probability defined by matingPool object
+     */
     public void generate() {
         for (int i = 0; i < this.population.length; i++) {
             int A = new Random().nextInt(matingPool.size());
