@@ -12,7 +12,7 @@ public class MatchIndicatorCounter implements MatchIndicatorCounterStrategy {
         int score = 0;
         for (Participant p: genes) {
             for (String attribute: attributesTarget) {
-                for (String interest: p.getInterestArea()) {
+                for (String interest: p.getAttributes()) {
                     if (attribute.equals(interest)) {
                         score += 1;
                     }

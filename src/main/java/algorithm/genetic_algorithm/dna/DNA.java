@@ -20,7 +20,7 @@ public class DNA {
         this.geneticInheritanceProcess = new GeneticInheritanceProcess(participants);
         if (isDummy) {
             for (int i = 0; i < suggestionsNr; i++) {
-                Participant watchman = new Participant(-1, List.of("WATCHMAN"));
+                Participant watchman = new Participant(-1, List.of("WATCHMAN"), List.of("DUMMY_JOB"), List.of("DUMMY_INTEREST"));
                 this.genes[i] = watchman;
             }
         }

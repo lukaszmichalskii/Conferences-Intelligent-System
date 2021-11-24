@@ -28,7 +28,7 @@ public class DataOrganizer {
             attributes = removeDuplicates(attributes);
 
             // create useful data
-            data.add(new Participant(ID, attributes));
+            data.add(new Participant(ID, attributes, occupation, interestArea));
         }
 
         return data;

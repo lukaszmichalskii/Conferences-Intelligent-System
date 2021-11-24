@@ -14,10 +14,22 @@ public class Participant {
      * Compressed attributes: occupation + area of interest
      */
     private final List<String> attributes;
+    private final List<String> occupation;
+    private final List<String> interestArea;
 
-    public Participant(Integer ID, List<String> attributes) {
+    public Participant(Integer ID, List<String> attributes, List<String> occupation, List<String> interestArea) {
         this.ID = ID;
         this.attributes = attributes;
+        this.occupation = occupation;
+        this.interestArea = interestArea;
+    }
+
+    public List<String> getAttributes() {
+        return attributes;
+    }
+
+    public List<String> getOccupation() {
+        return occupation;
     }
 
     @Override
